@@ -44,23 +44,54 @@ let submitButtonHandler = function(event) {
     let cityName = cityInput.value.trim();
 
     if (cityName) {
+
+        citiesArr = JSON.parse(localStorage.getItem("citiesArr"));
+        // if local storage is empty, create an empty array
+        if (!citiesArr) {
+            citiesArr = [];
+        }
         // push city to the array and save to local storage
         citiesArr.push(cityName);
         saveCities();
         // call function to create an element for the city
         displayCityLinks();
         // send the imput to the getWeatherData function
-        getWeatherData(cityName);
+        getCityCoordinates(cityName);
         // reset the value 
         cityInput.value = "";
     }
 };
 
 // call the current weather data api when a city is entered
-var getWeatherData = function (city) {
+let getCityCoordinates = function (city) {
     // format the api url
-    var apiUrl = fetch("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&APPID=459a5e31598a1077257e521e66bb2960");
-    console.log(apiUrl);
+    let apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&APPID=459a5e31598a1077257e521e66bb2960";
+    
+    fetch(apiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                // retrieve the city coordinates and send them to the getweatherdata function
+                let cityLatitude = data.coord.lat;
+                let cityLongitude = data.coord.lon;
+                getWeatherData(cityLatitude, cityLongitude); 
+            });
+        } else {
+            alert("Error: " + response.statusText);
+        }
+    });
+};
+
+let getWeatherData = function(lat, lon) {
+    // format the api url
+    let weatherApiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&appid=459a5e31598a1077257e521e66bb2960"
+
+    fetch(weatherApiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                console.log(data);
+            });
+        }
+    });
 };
 
 // function to load previously saved cities and print new ones to the page as they are added
@@ -69,23 +100,26 @@ let displayCityLinks = function() {
     cityContainer.textContent = "";
     // load saved cities from local storage
     citiesArr = JSON.parse(localStorage.getItem("citiesArr"));
-    console.log(citiesArr);
-    // loop over the array to create link containers for each saved city
-    for (let i=0; i < citiesArr.length; i++) {
-        
-        // create link element
-        var cityEl = document.createElement("a");
-        cityEl.classList = "list-item flex-row";
-        cityEl.setAttribute("href", "http://api.openweathermap.org");
-        
-        // create span element to hold city name
-        var cityName = document.createElement("span");
-        cityName.textContent = citiesArr[i];
 
-        // append to container
-        cityEl.appendChild(cityName);
+    // run loop if there are stored city values
+    if (citiesArr) {
+        // loop over the array to create link containers for each saved city
+        for (let i=0; i < citiesArr.length; i++) {
+            
+            // create link element
+            var cityEl = document.createElement("a");
+            cityEl.classList = "list-item flex-row";
+            cityEl.setAttribute("href", "http://api.openweathermap.org");
+            
+            // create span element to hold city name
+            var cityName = document.createElement("span");
+            cityName.textContent = citiesArr[i];
 
-        cityContainer.appendChild(cityEl);
+            // append to container
+            cityEl.appendChild(cityName);
+
+            cityContainer.appendChild(cityEl);
+        }
     }
 };
 
