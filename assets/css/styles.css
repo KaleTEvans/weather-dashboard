@@ -1,0 +1,17 @@
+.hero {
+    padding: 25px;
+    align-items: center;
+    border-bottom: 5px solid black;
+}
+
+main {
+    padding-top: 25px;
+}
+
+.hero h1, .hero p {
+    text-align: center;
+}
+
+.city-selection {
+    padding-left: 25px;
+}
