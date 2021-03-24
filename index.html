@@ -25,13 +25,14 @@
                     <input name="city" id="city" type="text" class="form-input" />
                     <button type="submit" class="btn">Search</button>
                 </form>
-                <div id="previous-searches" class="list-group"></div>
+                <div class="list-group previous-searches"></div>
             </div>
         </div>
 
         <div class="col-9 col-md-9">
             <div class="current-day flex-row col-12">
-                <h2 class="city-title col-12">City: <span id="city-search-term"> <span id="current-day"></span></h2>
+                <h2 class="city-title col-12" id="city-search-term"> <span id="current-day"></span></h2>
+                <img id="weather-icon" />
                 <ul class="current-weather">
                     <li>Temperature: <span class="current-temperature"></span></li>
                     <li>Humidity: <span class="current-humidity"></span></li>
@@ -44,33 +45,33 @@
                 <div class="card-deck col-12 justify-space-around">
                     <div class="card">
                         <h5 class="card-title day-1"></h5>
-                        <img class="weather-img">
+                        <img class="weather-img-1">
                         <p class="card-text">Temp: <span class="temp" id="day-1"></span></p>
-                        <p class="card-text">Humidity: <span class="humidity" id="day-1"></span></p>
+                        <p class="card-text">Humidity: <span class="humidity" id="1"></span></p>
                     </div>
                     <div class="card">
                         <h5 class="card-title day-2"></h5>
-                        <img class="weather-img">
+                        <img class="weather-img-2">
                         <p class="card-text">Temp: <span class="temp" id="day-2"></span></p>
-                        <p class="card-text">Humidity: <span class="humidity" id="day-2"></span></p>
+                        <p class="card-text">Humidity: <span class="humidity" id="2"></span></p>
                     </div>
                     <div class="card">
                         <h5 class="card-title day-3"></h5>
-                        <img class="weather-img">
+                        <img class="weather-img-3">
                         <p class="card-text">Temp: <span class="temp" id="day-3"></span></p>
-                        <p class="card-text">Humidity: <span class="humidity" id="day-3"></span></p>
+                        <p class="card-text">Humidity: <span class="humidity" id="3"></span></p>
                     </div>
                     <div class="card">
                         <h5 class="card-title day-4"></h5>
-                        <img class="weather-img">
+                        <img class="weather-img-4">
                         <p class="card-text">Temp: <span class="temp" id="day-4"></span></p>
-                        <p class="card-text">Humidity: <span class="humidity" id="day-4"></span></p>
+                        <p class="card-text">Humidity: <span class="humidity" id="4"></span></p>
                     </div>
                     <div class="card">
                         <h5 class="card-title day-5"></h5>
-                        <img class="weather-img">
+                        <img class="weather-img-5">
                         <p class="card-text">Temp: <span class="temp" id="day-5"></span></p>
-                        <p class="card-text">Humidity: <span class="humidity" id="day-5"></span></p>
+                        <p class="card-text">Humidity: <span class="humidity" id="5"></span></p>
                     </div>
                 </div>
             </div>

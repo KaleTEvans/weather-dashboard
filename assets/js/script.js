@@ -18,16 +18,17 @@
 let userFormEl = document.querySelector("#city-form");
 let cityInput = document.querySelector('#city');
 
-let cityContainer = document.querySelector("#previous-searches");
+let cityContainer = document.querySelector(".previous-searches");
 
+let currentDate;
 // array to hold previously entered cities
 let citiesArr = [];
 
 // function to display the dates upon page load
 $(document).ready(function() {
     // set variable for date
-    let currentDate = moment().format("dddd, MMM Do YYYY");
-    $("#current-day").html("(" + currentDate + ")");
+    currentDate = moment().format("dddd, MMM Do YYYY");
+    $("#current-day").html("Today is " + currentDate);
 
     // get the next 5 days for the forecast by looping over them
     for (let i=1; i<=5; i++) {
@@ -54,13 +55,46 @@ let submitButtonHandler = function(event) {
         citiesArr.push(cityName);
         saveCities();
         // call function to create an element for the city
-        displayCityLinks();
+        displayCityButtons();
         // send the imput to the getWeatherData function
         getCityCoordinates(cityName);
         // reset the value 
         cityInput.value = "";
+    } else {
+        alert("Please enter a valid city!");
     }
 };
+
+// function to load previously saved cities and print new ones to the page as they are added
+let displayCityButtons = function() {
+    // clear container of items
+    cityContainer.textContent = "";
+    // load saved cities from local storage
+    citiesArr = JSON.parse(localStorage.getItem("citiesArr"));
+
+    // run loop if there are stored city values
+    if (citiesArr) {
+        // loop over the array to create link containers for each saved city
+        for (let i=0; i < citiesArr.length; i++) {
+            
+            // create link element
+            var cityEl = document.createElement("button");
+            cityEl.classList = "cityBtn flex-row";
+            cityEl.setAttribute('id', citiesArr[i]);
+            cityEl.textContent = citiesArr[i];
+            // append to container
+            cityContainer.appendChild(cityEl);
+        }
+    }
+};
+
+// one of the buttons of previous cities was clicked
+$(".previous-searches").on('click', 'button.cityBtn', function() {
+    // determine the button id
+    var citySelection = $(this).attr('id');
+    // run this through the city coordinates function
+    getCityCoordinates(citySelection);
+});
 
 // call the current weather data api when a city is entered
 let getCityCoordinates = function (city) {
@@ -74,6 +108,14 @@ let getCityCoordinates = function (city) {
                 let cityLatitude = data.coord.lat;
                 let cityLongitude = data.coord.lon;
                 getWeatherData(cityLatitude, cityLongitude); 
+
+                // print the city name and date to the page
+                let cityTitle = data.name;
+                $('#city-search-term').html(cityTitle + " Weather for " + currentDate);
+
+                // retrieve the weather icon
+                let weatherIcon = 'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png';
+                $('#weather-icon').attr('src', weatherIcon);
             });
         } else {
             alert("Error: " + response.statusText);
@@ -88,45 +130,48 @@ let getWeatherData = function(lat, lon) {
     fetch(weatherApiUrl).then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
-                console.log(data);
+                // send to function to create the html
+                displayWeatherData(data);
             });
         }
     });
 };
 
-// function to load previously saved cities and print new ones to the page as they are added
-let displayCityLinks = function() {
-    // clear container of items
-    cityContainer.textContent = "";
-    // load saved cities from local storage
-    citiesArr = JSON.parse(localStorage.getItem("citiesArr"));
+// function to display all of the weather data on the page
+let displayWeatherData = function(data) {
 
-    // run loop if there are stored city values
-    if (citiesArr) {
-        // loop over the array to create link containers for each saved city
-        for (let i=0; i < citiesArr.length; i++) {
-            
-            // create link element
-            var cityEl = document.createElement("a");
-            cityEl.classList = "list-item flex-row";
-            cityEl.setAttribute("href", "http://api.openweathermap.org");
-            
-            // create span element to hold city name
-            var cityName = document.createElement("span");
-            cityName.textContent = citiesArr[i];
+    // retrieve temperature
+    let currentTemp = data.current.temp;
+    $('.current-temperature').html(currentTemp + " \u00B0 F");
+    // retrieve humidity
+    let currentHumidity = data.current.humidity;
+    $('.current-humidity').html(currentHumidity + " %");
+    // retrieve wind speed
+    let windSpeed = data.current.wind_speed;
+    $('.current-wind').html(windSpeed + " MPH");
+    // retrieve uv index
+    let currentUv = data.current.uvi;
+    $('.current-uv').html(currentUv);
 
-            // append to container
-            cityEl.appendChild(cityName);
-
-            cityContainer.appendChild(cityEl);
-        }
+    // for the daily weather data, loop over each day
+    for (let i=1; i <= 5; i++) {
+        // retrieve weather icon
+        let forecastIcon = 'http://openweathermap.org/img/wn/' + data.daily[i].weather[0].icon + '@2x.png';
+        $('.weather-img-' + i).attr('src', forecastIcon);
+        // retrieve temp
+        let forecastTemp = data.daily[i].temp.day;
+        $('#day-' + i).html(forecastTemp + " \u00B0 F");
+        // retrieve humidity
+        let forecastHumidity = data.daily[i].humidity;
+        $('#' + i).html(forecastHumidity + " %");
     }
-};
+}
 
+// save function
 let saveCities = function() {
     localStorage.setItem("citiesArr", JSON.stringify(citiesArr));
 };
 
 userFormEl.addEventListener("submit", submitButtonHandler);
 // getWeatherData();
-displayCityLinks();
+displayCityButtons();
