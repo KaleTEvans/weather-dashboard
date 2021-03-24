@@ -1,7 +1,14 @@
+
+
 .hero {
     padding: 25px;
     align-items: center;
     border-bottom: 5px solid black;
+}
+
+.page-title {
+    font-weight: bold;
+    color: blue;
 }
 
 main {
@@ -14,4 +21,20 @@ main {
 
 .city-selection {
     padding-left: 25px;
+}
+
+.current-uv.green {
+    background-color: green;
+}
+.current-uv.yellow {
+    background-color: yellow;
+}
+.current-uv.orange {
+    background-color: orange;
+}
+.current-uv.red {
+    background-color: red;
+}
+.current-uv.violet {
+    background-color: blueviolet;
 }

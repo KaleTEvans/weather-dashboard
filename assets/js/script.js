@@ -51,6 +51,13 @@ let submitButtonHandler = function(event) {
         if (!citiesArr) {
             citiesArr = [];
         }
+        // optional function to not allow for duplicate buttons, but decreases usability imo
+        /* for (let i=0; i < citiesArr.length; i++) {
+            if (cityName === citiesArr[i]) {
+                return getCityCoordinates(cityName);
+            }
+        } */
+
         // push city to the array and save to local storage
         citiesArr.push(cityName);
         saveCities();
@@ -152,6 +159,8 @@ let displayWeatherData = function(data) {
     // retrieve uv index
     let currentUv = data.current.uvi;
     $('.current-uv').html(currentUv);
+    // send uv data to uv color function
+    uvIndexColor(currentUv);
 
     // for the daily weather data, loop over each day
     for (let i=1; i <= 5; i++) {
@@ -167,11 +176,32 @@ let displayWeatherData = function(data) {
     }
 }
 
+let uvIndexColor = function(uvData) {
+    // select the uv data box 
+    let uvBox = document.querySelector('.current-uv');
+    // run if statements
+    if (uvData < 2) {
+        $(uvBox).addClass('green');
+    }
+    if (uvData >= 2 && uvData < 5) {
+        $(uvBox).addClass('yellow');
+    }
+    if (uvData >=5 && uvData < 7) {
+        $(uvBox).addClass('orange');
+    }
+    if (uvData >= 7 && uvData < 11) {
+        $(uvBox).addClass('red');
+    }
+    if (uvData >= 11) {
+        $(uvBox).addClass('violet');
+    }
+};
+
 // save function
 let saveCities = function() {
     localStorage.setItem("citiesArr", JSON.stringify(citiesArr));
 };
 
 userFormEl.addEventListener("submit", submitButtonHandler);
-// getWeatherData();
+
 displayCityButtons();
