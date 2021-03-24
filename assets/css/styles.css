@@ -1,18 +1,28 @@
+body {
+    background-image: url('../images/background.jpg');
+}
 
-
-.hero {
-    padding: 25px;
+.hero {  
     align-items: center;
     border-bottom: 5px solid black;
+    background-color: rgb(188, 188, 204);
+    margin: 35px 250px 0 250px;
+}
+
+.hero, p {
+    font-weight: bold;
+    color: rgb(14, 13, 20);
+
 }
 
 .page-title {
     font-weight: bold;
-    color: blue;
+    color: black;
+    
 }
 
 main {
-    padding-top: 25px;
+    padding: 25px;
 }
 
 .hero h1, .hero p {
@@ -20,7 +30,29 @@ main {
 }
 
 .city-selection {
+    background-color: blanchedalmond;
+    padding: 25px 25px 250px 15px;
+    border-radius: 5px;
+}
+
+.current-day {
+    background-color: blanchedalmond;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+#weather-icon {
+    background-color: lightblue;
+    margin: 25px;
+}
+
+.current-weather {
+    list-style: none;
     padding-left: 25px;
+}
+
+.current-weather, li {
+    font-weight: bold;
 }
 
 .current-uv.green {
