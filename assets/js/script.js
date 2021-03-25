@@ -106,7 +106,7 @@ $(".previous-searches").on('click', 'button.cityBtn', function() {
 // call the current weather data api when a city is entered
 let getCityCoordinates = function (city) {
     // format the api url
-    let apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&APPID=459a5e31598a1077257e521e66bb2960";
+    let apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&APPID=459a5e31598a1077257e521e66bb2960";
     
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
