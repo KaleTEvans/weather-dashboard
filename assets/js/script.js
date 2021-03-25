@@ -165,7 +165,7 @@ let displayWeatherData = function(data) {
     // for the daily weather data, loop over each day
     for (let i=1; i <= 5; i++) {
         // retrieve weather icon
-        let forecastIcon = 'http://openweathermap.org/img/wn/' + data.daily[i].weather[0].icon + '@2x.png';
+        let forecastIcon = 'https://openweathermap.org/img/wn/' + data.daily[i].weather[0].icon + '@2x.png';
         $('.weather-img-' + i).attr('src', forecastIcon);
         // retrieve temp
         let forecastTemp = data.daily[i].temp.day;
