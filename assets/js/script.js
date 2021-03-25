@@ -121,7 +121,7 @@ let getCityCoordinates = function (city) {
                 $('#city-search-term').html(cityTitle + " Weather for " + currentDate);
 
                 // retrieve the weather icon
-                let weatherIcon = 'http://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png';
+                let weatherIcon = 'https://openweathermap.org/img/wn/' + data.weather[0].icon + '@2x.png';
                 $('#weather-icon').attr('src', weatherIcon);
             });
         } else {
